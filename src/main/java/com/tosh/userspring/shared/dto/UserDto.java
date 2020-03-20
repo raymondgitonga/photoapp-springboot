@@ -7,6 +7,7 @@ public class UserDto implements Serializable {
     private long id;
     private String userId;
     private String name;
+    private String email;
     private String password;
     private String encryptedPassword;
     private String emailVerificationToken;
@@ -34,6 +35,14 @@ public class UserDto implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
