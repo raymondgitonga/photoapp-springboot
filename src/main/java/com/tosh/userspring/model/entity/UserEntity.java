@@ -1,4 +1,4 @@
-package com.tosh.userspring.entity;
+package com.tosh.userspring.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,8 +28,8 @@ public class UserEntity implements Serializable {
 
     private String emailVerificationToken;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private Boolean emailVerificationStatus;
+    @Column(nullable = false)
+    private Boolean emailVerificationStatus = false;
 
     public long getId() {
         return id;
