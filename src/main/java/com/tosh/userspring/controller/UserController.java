@@ -1,6 +1,6 @@
 package com.tosh.userspring.controller;
 
-import com.tosh.userspring.model.request.UserDetailsRequestModel;
+import com.tosh.userspring.model.request.UserDetailsRequest;
 import com.tosh.userspring.model.response.UserRest;
 import com.tosh.userspring.service.UserService;
 import com.tosh.userspring.shared.dto.UserDto;
@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails){
+    public UserRest createUser(@RequestBody UserDetailsRequest userDetails){
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails, userDto);
 
