@@ -5,7 +5,6 @@ import com.tosh.userspring.model.repository.UserRepository;
 import com.tosh.userspring.service.UserService;
 import com.tosh.userspring.shared.Utils;
 import com.tosh.userspring.shared.dto.UserDto;
-import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
