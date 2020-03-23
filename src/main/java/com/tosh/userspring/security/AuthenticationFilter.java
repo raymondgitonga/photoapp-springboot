@@ -7,7 +7,6 @@ import com.tosh.userspring.service.UserService;
 import com.tosh.userspring.shared.dto.UserDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -56,7 +55,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             throws IOException, ServletException {
 
         String username = ((User) authResult.getPrincipal()).getUsername();
-//        String tokenSecret = new SecurityConstants().getTokenSecret();
 
         String token = Jwts.builder()
                 .setSubject(username)
