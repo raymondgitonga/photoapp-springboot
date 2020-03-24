@@ -2,8 +2,7 @@ package com.tosh.userspring.controller;
 
 import com.tosh.userspring.exceptions.UserServiceException;
 import com.tosh.userspring.model.request.UserDetailsRequest;
-import com.tosh.userspring.model.response.ErrorMessages;
-import com.tosh.userspring.model.response.UserRest;
+import com.tosh.userspring.model.response.*;
 import com.tosh.userspring.service.UserService;
 import com.tosh.userspring.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
@@ -65,8 +64,14 @@ public class UserController {
         return returnValue;
     }
 
-    @DeleteMapping
-    public String deleteUser(){
-        return "delete user was called";
+    @DeleteMapping( path = "/{id}",
+            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
+    public OperationStatusModel deleteUser(@PathVariable String id){
+        OperationStatusModel returnValue = new OperationStatusModel();
+        returnValue.setOperationName(RequestOperation.DELETE.name());
+
+        userService.deleteUser(id);
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+        return returnValue;
     }
 }
