@@ -1,7 +1,9 @@
 package com.tosh.userspring.service.impl;
 
+import com.tosh.userspring.exceptions.UserServiceException;
 import com.tosh.userspring.model.entity.UserEntity;
 import com.tosh.userspring.model.repository.UserRepository;
+import com.tosh.userspring.model.response.ErrorMessages;
 import com.tosh.userspring.service.UserService;
 import com.tosh.userspring.shared.Utils;
 import com.tosh.userspring.shared.dto.UserDto;
@@ -44,6 +46,22 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(storedUserDetails, returnValue);
 
 
+        return returnValue;
+    }
+
+    @Override
+    public UserDto updateUser(String id, UserDto user) {
+        UserDto returnValue = new UserDto();
+
+        UserEntity userEntity = userRepository.findByUserId(id);
+
+        if (userEntity == null)  throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
+
+        userEntity.setName(user.getName());
+
+        UserEntity updatedUser = userRepository.save(userEntity);
+
+        BeanUtils.copyProperties(userEntity, returnValue);
         return returnValue;
     }
 
