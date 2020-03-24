@@ -1,6 +1,8 @@
 package com.tosh.userspring.controller;
 
+import com.tosh.userspring.exceptions.UserServiceException;
 import com.tosh.userspring.model.request.UserDetailsRequest;
+import com.tosh.userspring.model.response.ErrorMessages;
 import com.tosh.userspring.model.response.UserRest;
 import com.tosh.userspring.service.UserService;
 import com.tosh.userspring.shared.dto.UserDto;
@@ -32,8 +34,11 @@ public class UserController {
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
-    public UserRest createUser(@RequestBody UserDetailsRequest userDetails){
+    public UserRest createUser(@RequestBody UserDetailsRequest userDetails) throws Exception{
         UserDto userDto = new UserDto();
+
+        if (userDetails.getName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRE_FIELD.getErrorMessages());
+
         BeanUtils.copyProperties(userDetails, userDto);
 
         UserDto createdUser = userService.createUser(userDto);
