@@ -5,6 +5,7 @@ import com.tosh.userspring.model.request.UserDetailsRequest;
 import com.tosh.userspring.model.response.*;
 import com.tosh.userspring.service.UserService;
 import com.tosh.userspring.shared.dto.UserDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,7 +23,7 @@ public class UserController {
 
     @GetMapping(path = "/{id}",
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public UserRest getUser(@PathVariable String id){
+    public UserRest getUser(@PathVariable String id) {
         UserRest returnValue = new UserRest();
 
         UserDto userDto = userService.getUserByUserId(id);
@@ -34,12 +35,10 @@ public class UserController {
 
     @PostMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public UserRest createUser(@RequestBody UserDetailsRequest userDetails) throws Exception{
-        UserDto userDto = new UserDto();
+    public UserRest createUser(@RequestBody UserDetailsRequest userDetails) throws Exception {
 
-        if (userDetails.getName().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRE_FIELD.getErrorMessages());
-
-        BeanUtils.copyProperties(userDetails, userDto);
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto createdUser = userService.createUser(userDto);
 
@@ -49,9 +48,9 @@ public class UserController {
         return returnValue;
     }
 
-    @PutMapping( path = "/{id}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+    @PutMapping(path = "/{id}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequest userDetails){
+    public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequest userDetails) {
         UserDto userDto = new UserDto();
 
         BeanUtils.copyProperties(userDetails, userDto);
@@ -64,9 +63,9 @@ public class UserController {
         return returnValue;
     }
 
-    @DeleteMapping( path = "/{id}",
-            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
-    public OperationStatusModel deleteUser(@PathVariable String id){
+    @DeleteMapping(path = "/{id}",
+            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public OperationStatusModel deleteUser(@PathVariable String id) {
         OperationStatusModel returnValue = new OperationStatusModel();
         returnValue.setOperationName(RequestOperation.DELETE.name());
 
@@ -75,14 +74,14 @@ public class UserController {
         return returnValue;
     }
 
-    @GetMapping( produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
-                                   @RequestParam(value = "limit", defaultValue = "25") int limit){
+                                   @RequestParam(value = "limit", defaultValue = "25") int limit) {
         List<UserRest> returnValue = new ArrayList<>();
 
         List<UserDto> users = userService.getUsers(page, limit);
 
-        for (UserDto userDto: users){
+        for (UserDto userDto : users) {
             UserRest userModel = new UserRest();
             BeanUtils.copyProperties(userDto, userModel);
             returnValue.add(userModel);
