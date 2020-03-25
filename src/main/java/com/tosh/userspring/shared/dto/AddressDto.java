@@ -1,6 +1,6 @@
 package com.tosh.userspring.shared.dto;
 
-public class AddressDTO {
+public class AddressDto {
     private long id;
     private String city;
     private String country;
